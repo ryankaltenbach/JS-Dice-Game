@@ -13,12 +13,16 @@ var scores, roundScore, activePlayer;
 
 scores = [0,0]; //scores read out of this array
 roundScore = 0;
-activePlayer = 1;
+activePlayer = 0;
 
 
 document.querySelector('.dice').style.display = 'none';
+// This gets elements by the ID entered and changes them based on text content
+document.getElementById('score-0').textContent = '0';
+document.getElementById('score-1').textContent = '0';
 
-
+document.getElementById('current-0').textContent = '0';
+document.getElementById('current-1').textContent = '0';
 
 //
 function btn() {
@@ -38,9 +42,27 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
    var diceDom = document.querySelector('.dice');
    diceDom.style.display = 'block';
    diceDom.src = 'dice-' + dice + '.png';
-
   // 3. Update the round score IF the rolled number was not a one
+  if (dice !== 1){
+    //add score
+    roundScore += dice;
+    document.querySelector('#current-' + activePlayer).textContent = roundScore;
+  } else {
+    // next player, ternary operator
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    roundScore = 0;
 
+    document.getElementById('current-0').textContent ='0';
+    document.getElementById('current-1').textContent ='0';
+
+     document.querySelector('.player-0-panel').classList.toggle('active');
+     document.querySelector('.player-1-panel').classList.toggle('active');
+
+     document.querySelector('.dice').style.display = 'none';
+
+
+
+    }
 });
 
 

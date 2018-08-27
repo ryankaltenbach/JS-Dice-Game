@@ -9,73 +9,49 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, gamePlaying;
+
 init();
-
-
-// document.querySelector('.dice').style.display = 'none';
-// // This gets elements by the ID entered and changes them based on text content
-// document.getElementById('score-0').textContent = '0';
-// document.getElementById('score-1').textContent = '0';
-//
-// document.getElementById('current-0').textContent = '0';
-// document.getElementById('current-1').textContent = '0';
-
-//
-function btn() {
-  //Do something here
-
-}
-btn();
-
-
-
-//Selecting button roll            two arguments,type of event & function called
+//Selecting button roll two arguments,type of event & function called
 document.querySelector('.btn-roll').addEventListener('click', function () {
-//anomnymous function only used once
-  // 1. random number
-   var dice = Math.floor(Math.random()*6) +1;
-  // 2. display the result
-   var diceDom = document.querySelector('.dice');
-   diceDom.style.display = 'block';
-   diceDom.src = 'dice-' + dice + '.png';
-  // 3. Update the round score IF the rolled number was not a one
-  if (dice !== 1){
-    //add score
-    roundScore += dice;
-    document.querySelector('#current-' + activePlayer).textContent = roundScore;
-  } else {
-    // next player, ternary operator
-    nextPlayer();
-
-
-
-    }
+      if (gamePlaying) {
+      //anomnymous function only used once
+      // 1. random number
+       var dice = Math.floor(Math.random() * 6) +1;
+      // 2. display the result
+       var diceDom = document.querySelector('.dice');
+       diceDom.style.display = 'block';
+       diceDom.src = 'dice-' + dice + '.png';
+      // 3. Update the round score IF the rolled number was not a one
+      if (dice !== 1){
+        //add score
+        roundScore += dice;
+        document.querySelector('#current-' + activePlayer).textContent = roundScore;
+      } else {
+        // next player, ternary operator
+        nextPlayer();
+       }
+     }
 });
 
-
 document.querySelector('.btn-hold').addEventListener('click', function () {
+  if (gamePlaying) {
   // Add current score to GLOBAL score
   scores[activePlayer] += roundScore;
-
-
   // Update the UI
   document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-
   // Check if player won the game
-  if (scores[activePlayer] >= 10) {
+  if (scores[activePlayer] >= 100) {
     document.querySelector('#name-' + activePlayer).textContent = 'winner';
     document.querySelector('.dice').style.display = 'none';
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner')
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active')
-
+    gamePlaying = false;
   } else {
     // Next Player
     nextPlayer();
+    }
   }
-
-
-
 });
 
 function nextPlayer () {
@@ -84,20 +60,17 @@ function nextPlayer () {
 
   document.getElementById('current-0').textContent ='0';
   document.getElementById('current-1').textContent ='0';
-
-   document.querySelector('.player-0-panel').classList.toggle('active');
-   document.querySelector('.player-1-panel').classList.toggle('active');
-
-   document.querySelector('.dice').style.display = 'none';
+  document.querySelector('.player-0-panel').classList.toggle('active');
+  document.querySelector('.player-1-panel').classList.toggle('active');
+  document.querySelector('.dice').style.display = 'none';
 };
-
-
 document.querySelector('.btn-new').addEventListener('click', init);
 
 function init() {
   scores = [0, 0];
   activePlayer = 0;
   roundScore = 0;
+  gamePlaying = true;
 
   document.querySelector('.dice').style.display = 'none';
   // This gets elements by the ID entered and changes them based on text content
